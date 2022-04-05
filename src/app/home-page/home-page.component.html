@@ -1,0 +1,66 @@
+<div class="filters">
+    <mat-label>Sort by:</mat-label>
+    <!-- Value binded to sort using ngModel -->
+    <mat-button-toggle-group
+      [(ngModel)]="sort"
+      (change)="searchGames(sort)"
+      panelClass
+    >
+      <mat-button-toggle value="name">Name</mat-button-toggle>
+      <mat-button-toggle value="-released">Released Date</mat-button-toggle>
+      <mat-button-toggle value="-rating">Rating</mat-button-toggle>
+      <mat-button-toggle value="metacrit">Metacritic</mat-button-toggle>
+
+    </mat-button-toggle-group>
+</div>
+
+<!-- item container based on what you want -->
+<div class="items">
+  <ng-container *ngFor="let item of items">
+    <div class="item">
+      <div class="item-image-container">
+        <img
+          *ngIf="item.background_image"
+          src="{{ item.background_image }}"
+          alt="image"
+          class="item-image"/>
+        <p *ngIf="!item.background_image">No Background Image</p>
+
+      </div>
+      <div class="item-description">
+        <p class="item-name">{{ item.name }}</p>
+
+        <p class="item-details"
+          *ngIf="item.metacritic"
+          >
+          Metacritic: {{ item.metacritic }}</p>
+
+        <p class="item-details"
+          *ngIf="!item.metacritic"
+          >
+          Metacritic: N/A </p>
+
+        <p class="item-details"
+          *ngIf="item.rating">
+          Rating: {{item.rating}} / 5 &#9733;</p>
+
+        <p class="item-details"
+          *ngIf="!item.rating"
+          >
+          Rating: N/A </p>
+
+
+        <div class="item-platforms">
+          <!-- Every item has a parent_platforms which contains each platform -->
+          <ng-container *ngFor="let item of item.parent_platforms">
+            <img
+              *ngIf="checkPlatform(item.platform.slug)"
+              src="assets/images/{{ item.platform.slug }}.svg"
+              alt="platform"
+              class="item-platform"/>
+            </ng-container>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>
